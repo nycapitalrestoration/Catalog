@@ -81,8 +81,8 @@ while True:
 
     for i, p in enumerate(products):
         variant = p["variants"][0] if p.get("variants") else {}
-        # Prefer discounted/current price over compare_at_price (original price)
-        retail_price = variant.get("price") or variant.get("compare_at_price")
+        # Use discounted/current price only (no compare_at fallback)
+        retail_price = variant.get("price")
         try:
             retail_price = float(retail_price) if retail_price else 0.0
         except Exception:
@@ -942,7 +942,7 @@ footer a:hover {{
     <div class="header">
         <h1>Capital Restoration Catalog</h1>
         <p>Quality Furniture • Charity Proceeds • Free Removal Services</p>
-        <div class="retail-notice">Prices shown are retail prices</div>
+        <div class="retail-notice">Prices shown are already discounted</div>
     </div>
 
 
@@ -1014,7 +1014,7 @@ footer a:hover {{
             Need free furniture removal services? Email us!
         </div>
         <div class="footer-note">
-            Note: All prices shown are retail prices
+            Note: All prices shown are already discounted
         </div>
     </footer>
 </div>
