@@ -976,9 +976,21 @@ window.onscroll = function() {
 function scrollToTop() { window.scrollTo({top: 0, behavior: 'smooth'}); }
 
 // Init
-updateCartIndicator();
-updateCartModal();
-renderGallery();
+document.addEventListener('DOMContentLoaded', async function(){
+    try {
+        const response = await fetch('catalog.json?ts=' + Date.now());
+        if (response.ok) {
+            const data = await response.json();
+            if (Array.isArray(data) && data.length) {
+                products = data;
+                filteredProducts = [...products];
+            }
+        }
+    } catch (e) {}
+    updateCartIndicator();
+    updateCartModal();
+    renderGallery();
+});
 </script>
 </body>
 </html>
