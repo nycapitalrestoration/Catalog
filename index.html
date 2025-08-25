@@ -587,7 +587,7 @@ footer a:hover { color: #faf9f7; text-decoration: underline; }
     <div class="header">
         <h1>Capital Restoration Catalog</h1>
         <p>Quality Furniture • Charity Proceeds • Free Removal Services</p>
-        <div class="retail-notice">Prices shown are retail prices</div>
+        <div class="retail-notice">Prices shown are discount prices</div>
     </div>
 
     <div class="gallery-container">
@@ -613,7 +613,7 @@ footer a:hover { color: #faf9f7; text-decoration: underline; }
             <div class="right-column">
                 <h2 id="modalTitle"></h2>
                 <div class="modal-price" id="modalPrice"></div>
-                <div class="modal-retail-note">Retail price shown</div>
+                <div class="modal-retail-note">Discount price</div>
                 <div class="modal-actions">
                     <button class="modal-add-to-cart" id="modalAddToCart">Add to Inquiry List</button>
                     <a id="singleEmailBtn" class="contact-btn" href="#" target="_blank" rel="noopener">Email Inquiry</a>
@@ -656,7 +656,7 @@ footer a:hover { color: #faf9f7; text-decoration: underline; }
             Need free furniture removal services? Email us!
         </div>
         <div class="footer-note">
-            Note: All prices shown are retail prices
+            Note: All prices shown are discount prices
         </div>
     </footer>
 </div>
@@ -744,13 +744,13 @@ function updateCartModal() {
     let itemsHTML = '';
 
     cart.forEach(item => {
-        total += (item.retail_price || 0);
+        total += (item.clearance_price ?? item.retail_price ?? 0);
         itemsHTML += `
             <div class="cart-item">
                 <img src="${(item.image_urls && item.image_urls[0]) ? item.image_urls[0] : ''}" alt="${item.name}" class="cart-item-img">
                 <div class="cart-item-details">
                     <div class="cart-item-name">${item.name}</div>
-                    <div class="cart-item-price">$${(item.retail_price || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
+                    <div class="cart-item-price">$${((item.clearance_price ?? item.retail_price) || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
                 </div>
                 <button class="remove-from-cart" onclick="removeFromCart(${item.id})">×</button>
             </div>
@@ -764,7 +764,7 @@ function updateCartModal() {
     const subject = "Inquiry about " + cart.length + " product" + (cart.length > 1 ? "s" : "");
     let body = "I'm interested in the following products:%0D%0A%0D%0A";
     cart.forEach(item => {
-        body += `- ${item.name}: $${(item.retail_price || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}%0D%0A`;
+        body += `- ${item.name}: $${((item.clearance_price ?? item.retail_price) || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}%0D%0A`;
     });
     body += "%0D%0ATotal: $" + total.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) + "%0D%0A%0D%0APlease contact me with more information.";
     emailInquiryBtn.href = `mailto:CapitalRestorationNewYork@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
@@ -812,8 +812,8 @@ function renderGallery() {
         info.className='product-info';
         info.innerHTML = `
             <div class="product-name">${product.name}</div>
-            <div class="product-price">$${(product.retail_price || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
-            <div class="product-retail-note">Retail price</div>
+            <div class="product-price">$${((product.clearance_price ?? product.retail_price) || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
+            <div class="product-retail-note">Discount price</div>
         `;
 
         card.appendChild(img);
@@ -890,14 +890,14 @@ function loadProductModal(index){
     const product=filteredProducts[index];
     currentProductId = product.id;
     modalTitle.innerText=product.name;
-    modalPrice.innerText='$' + (product.retail_price || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
-    modalDescription.innerText=product.description || '';
+    modalPrice.innerText='$' + ((product.clearance_price ?? product.retail_price) || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+    modalDescription.innerText=(product.description || '').replace(/France\s*&\s*Son/gi, '').replace(/France and Son/gi, '');
 
     // Single-item email inquiry (from first code)
     const subject = encodeURIComponent("Product Inquiry: " + product.name);
     const body = encodeURIComponent(
         "Hello Capital Restoration,%0D%0A%0D%0AI'd like to inquire about:%0D%0A- " + product.name + 
-        "%0D%0ARetail price: $" + (product.retail_price || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) +
+        "%0D%0ADiscount price: $" + ((product.clearance_price ?? product.retail_price) || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) +
         "%0D%0A%0D%0AThanks!"
     );
     singleEmailBtn.href = `mailto:CapitalRestorationNewYork@gmail.com?subject=${subject}&body=${body}`;
