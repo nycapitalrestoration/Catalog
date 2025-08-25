@@ -588,7 +588,7 @@ footer a:hover { color: #faf9f7; text-decoration: underline; }
     <div class="header">
         <h1>Capital Restoration Catalog</h1>
         <p>Quality Furniture • Charity Proceeds • Free Removal Services</p>
-        <div class="retail-notice">Prices shown are France & Son discount prices</div>
+        <div class="retail-notice">Prices shown are discount prices</div>
     </div>
 
     <div class="gallery-container">
@@ -614,7 +614,7 @@ footer a:hover { color: #faf9f7; text-decoration: underline; }
             <div class="right-column">
                 <h2 id="modalTitle"></h2>
                 <div class="modal-price" id="modalPrice"></div>
-                <div class="modal-retail-note">France & Son discount price</div>
+                <div class="modal-retail-note">Discount price</div>
                 <div class="modal-actions">
                     <button class="modal-add-to-cart" id="modalAddToCart">Add to Inquiry List</button>
                     <a id="singleEmailBtn" class="contact-btn" href="#" target="_blank" rel="noopener">Email Inquiry</a>
@@ -657,7 +657,7 @@ footer a:hover { color: #faf9f7; text-decoration: underline; }
             Need free furniture removal services? Email us!
         </div>
         <div class="footer-note">
-            Note: All prices shown are France & Son discount prices
+            Note: All prices shown are discount prices
         </div>
     </footer>
 </div>
@@ -814,7 +814,7 @@ function renderGallery() {
         info.innerHTML = `
             <div class="product-name">${product.name}</div>
             <div class="product-price">$${((product.clearance_price ?? product.retail_price) || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
-            <div class="product-retail-note">France & Son discount price</div>
+            <div class="product-retail-note">Discount price</div>
         `;
 
         card.appendChild(img);
@@ -892,7 +892,7 @@ function loadProductModal(index){
     currentProductId = product.id;
     modalTitle.innerText=product.name;
     modalPrice.innerText='$' + ((product.clearance_price ?? product.retail_price) || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
-    modalDescription.innerText=product.description || '';
+    modalDescription.innerText=(product.description || '').replace(/France\s*&\s*Son/gi, '').replace(/France and Son/gi, '');
 
     // Single-item email inquiry (from first code)
     const subject = encodeURIComponent("Product Inquiry: " + product.name);
