@@ -970,7 +970,7 @@ footer a:hover {{
             <div class="right-column">
                 <h2 id="modalTitle"></h2>
                 <div class="modal-price" id="modalPrice"></div>
-                <div class="modal-retail-note">Retail price shown</div>
+                <div class="modal-retail-note">Discounted price</div>
                 <button class="modal-add-to-cart" id="modalAddToCart">Add to Inquiry List</button>
                 <a href="#" class="contact-btn" id="modalEmailBtn">Email Inquiry (uses your cart)</a>
                 <div class="description" id="modalDescription"></div>
@@ -1116,7 +1116,7 @@ function formatMoney(n) {{
 
 function buildCartMailtoLink() {{
     const subject = cart.length > 0
-        ? `Inquiry about ${cart.length} product${cart.length > 1 ? 's' : ''}`
+        ? `Inquiry about ${{cart.length}} product${{cart.length > 1 ? 's' : ''}}`
         : 'Product Inquiry';
 
 
@@ -1127,12 +1127,12 @@ function buildCartMailtoLink() {{
     if (cart.length > 0) {{
         lines.push("I'd like to inquire about:");
         cart.forEach(item => {{
-            lines.push(`- ${item.name}`);
-            lines.push(`  Retail price: $${formatMoney(item.retail_price)}`);
+            lines.push(`- ${{item.name}}`);
+            lines.push(`  Price: $${{formatMoney(item.retail_price)}}`);
         }});
         const total = cart.reduce((sum, i) => sum + (i.retail_price || 0), 0);
         lines.push('');
-        lines.push(`Total (retail): $${formatMoney(total)}`);
+        lines.push(`Total: $${{formatMoney(total)}}`);
     }} else {{
         lines.push("I'd like to inquire about the following product(s):");
     }}
@@ -1167,7 +1167,7 @@ function updateCartModal() {{
                 <img src="${{item.image_urls && item.image_urls[0] ? item.image_urls[0] : ''}}" alt="${{item.name}}" class="cart-item-img">
                 <div class="cart-item-details">
                     <div class="cart-item-name">${{item.name}}</div>
-                    <div class="cart-item-price">$${{formatMoney(item.retail_price || 0)}}</div>
+                    <div class="cart-item-price">$${{formatMoney(item.retail_price || 0)}} </div>
                 </div>
                 <button class="remove-from-cart" onclick="removeFromCart(${{item.id}})">×</button>
             </div>
@@ -1235,7 +1235,7 @@ function renderGallery() {{
         info.innerHTML = `
             <div class="product-name">${{product.name}}</div>
             <div class="product-price">$${{formatMoney(product.retail_price || 0)}}</div>
-            <div class="product-retail-note">Retail price</div>
+            <div class="product-retail-note">Price</div>
         `;
 
 
@@ -1268,7 +1268,7 @@ function renderPagination() {{
     firstBtn.className = 'pagination-btn';
     firstBtn.textContent = 'First';
     firstBtn.disabled = currentPage === 1;
-    firstBtn.onclick = () => { currentPage = 1; renderGallery(); window.scrollTo(0,0); };
+    firstBtn.onclick = () => {{ currentPage = 1; renderGallery(); window.scrollTo(0,0); }};
     controls.appendChild(firstBtn);
 
 
@@ -1303,7 +1303,7 @@ function renderPagination() {{
         const btn = document.createElement('button');
         btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
         btn.innerText = i;
-        btn.onclick = () => { currentPage = i; renderGallery(); window.scrollTo(0,0); };
+        btn.onclick = () => {{ currentPage = i; renderGallery(); window.scrollTo(0,0); }};
         numbersContainer.appendChild(btn);
     }}
     controls.appendChild(numbersContainer);
@@ -1329,7 +1329,7 @@ function renderPagination() {{
     lastBtn.className = 'pagination-btn';
     lastBtn.textContent = 'Last';
     lastBtn.disabled = currentPage === numPages;
-    lastBtn.onclick = () => { currentPage = numPages; renderGallery(); window.scrollTo(0,0); };
+    lastBtn.onclick = () => {{ currentPage = numPages; renderGallery(); window.scrollTo(0,0); }};
     controls.appendChild(lastBtn);
 
 
@@ -1536,4 +1536,3 @@ try:
 except Exception:
     # If not in Colab, just print path
     print(f"Saved: {html_file}")
-
