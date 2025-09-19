@@ -1536,9 +1536,6 @@ function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-
-
-
 // Initial render
 updateCartIndicator();
 updateCartModal();
@@ -1546,3 +1543,12 @@ renderGallery();
 </script>
 </body>
 </html>
+
+<script>
+  function sendHeight() {
+    parent.postMessage(document.body.scrollHeight, '*');
+  }
+  window.onload = sendHeight;
+  window.onresize = sendHeight;
+</script>
+
